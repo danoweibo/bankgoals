@@ -33,19 +33,20 @@ type APIServer struct {
 	address string
 }
 
-func NewAPIServer(address string) *APIServer {
+// Change name from APIServerInstance to APIServerInstance.
+func APIServerInstance(address string) *APIServer {
 	return &APIServer{
 		address: address,
 	}
 }
 
 func (s *APIServer) Run() {
-	router := mux.NewRouter()
+	var router *mux.Router = mux.NewRouter()
 	router.HandleFunc("/account", makeHTTPHandleFunc(s.handleAccount))
 	router.HandleFunc("/account/{id}", makeHTTPHandleFunc(s.handleAccount))
 	log.Println("JSON API server running on port: ", s.address)
 
-	// May need to change it to ListenAndServeTLS for added security.
+	// For added security, use ListenAndServeTLS.
 	http.ListenAndServe(s.address, router)
 }
 
@@ -68,7 +69,7 @@ func (s *APIServer) handleGetAccount(w http.ResponseWriter, r *http.Request) err
 	id := mux.Vars(r)["id"]
 	fmt.Println(id)
 
-	account := &Account{
+	var account *Account = &Account{
 		ID: 1,
 		FirstName: "John",
 	}
