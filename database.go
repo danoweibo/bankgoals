@@ -10,6 +10,7 @@ import (
 type Database interface {
 	CreateAccount(*Account) error
 	GetAccountByID(id int) (*Account, error)
+	GetAccounts() ([]*Account, error)
 	UpdateAccount(*Account) error
 	DeleteAccount(id int) error
 }
@@ -46,7 +47,8 @@ func (db *PostgresDB) createAccountTable() error {
 		first_name VARCHAR(50),
 		last_name VARCHAR(50),
 		number BIGINT UNIQUE,
-		balance BIGINT
+		balance BIGINT,
+		createdat TIMESTAMP
 		)`
 
 	_, err := db.psql.Exec(query)
@@ -54,8 +56,8 @@ func (db *PostgresDB) createAccountTable() error {
 }
 
 func (pg *PostgresDB) CreateAccount(acc *Account) error {
-	query := `INSERT INTO accounts (first_name, last_name, number, balance) 
-	VALUES ($1, $2, $3, $4) RETURNING id`
+	query := `INSERT INTO accounts (first_name, last_name, number, balance, createdat) 
+	VALUES ($1, $2, $3, $4, $5) RETURNING id`
 
 	resp, err := pg.psql.Query(
 		query, 
@@ -85,4 +87,30 @@ func (pg *PostgresDB) DeleteAccount(id int) error {
 
 func (pg *PostgresDB) GetAccountByID(id int) (*Account, error) {
 	return nil, nil
+}
+
+func (pg *PostgresDB) GetAccounts() ([]*Account, error) {
+	rows, err := pg.psql.Query("SELECT * FROM accounts")
+	if err != nil {
+		return nil, err
+	}
+
+	accounts := []*Account{}
+	for rows.Next() {
+		account := new(Account)
+		err := rows.Scan(
+			&account.ID,
+			&account.FirstName,
+			&account.LastName,
+			&account.Number,
+			&account.Balance,
+			&account.CreatedAt,
+		); 
+		if err != nil {
+			return nil, err
+		}
+
+		accounts = append(accounts, account)   	
+	}
+	return accounts, nil
 }
