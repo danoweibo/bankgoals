@@ -19,6 +19,11 @@ type Account struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
+type LimitConstraints struct {
+	dailySpend int64 `json:number`
+	accountType string `json:accGrade`
+}
+
 // Snake case for the json serialization of the Account properties is also possible.
 // ex: `json:"first_name"`
 

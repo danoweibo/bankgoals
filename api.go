@@ -28,7 +28,6 @@ func (s *APIServer) Run() {
 	router.HandleFunc("/account/{id}", makeHTTPHandleFunc(s.handleGetAccountByID))
 	log.Println("JSON API server running on port: ", s.address)
 
-	// For added security, use ListenAndServeTLS.
 	http.ListenAndServe(s.address, router)
 }
 
