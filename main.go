@@ -7,7 +7,7 @@ import (
 func main() {
 	dbase, err := PostgresDBInstance()
 	if err != nil {
-		log.Fatal("Could not connect to database: ", err)
+		log.Fatal("An unknown error occurred while connecting to the database: ", err)
 	}
 
 	if err = dbase.Init(); err != nil {
