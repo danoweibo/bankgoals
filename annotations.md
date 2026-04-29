@@ -14,8 +14,7 @@ They also serve as a helpful guide for anyone exploring the codebase, whether yo
 
 ## ⚙️ Makefile Overview
 
-This Makefile bootstraps common tasks for the project **bankgoals**.  
-It serves a similar purpose to a `package.json` file — but for **Golang** or **C++** codebases.
+This Makefile bootstraps common tasks for the project **bankgoals**.
 
 ### General Rule
 
