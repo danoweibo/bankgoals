@@ -35,3 +35,9 @@ func NewAccount(firstName, lastName string) *Account {
 		CreatedAt: time.Now().UTC(),
 	}
 }
+
+func AccessAccount(accNumber string) *Account {
+	return &Account{
+		
+	}
+}
